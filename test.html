@@ -42,7 +42,7 @@
         <div style="background-color: #eee; width: 100%; margin-bottom: 10px;"><div id="timer-bar"></div></div>
         <div id="timer-text" style="font-size: 1.3em; color: #e74c3c; font-weight: bold; margin-bottom: 20px;">残り時間: 30 秒</div>
         
-        <img src="cab_question.jpeg" alt="問題画像" style="max-width: 100%; margin-bottom: 20px;">
+        <img src="cab_question.jpeg" alt="問題画像" style="max-width: 80%; margin-bottom: 20px;">
         
         <div style="font-size: 1.5em; margin-bottom: 20px;">
             <label><input type="radio" name="choice" value="①"> ①</label>
@@ -100,7 +100,7 @@
             } else {
                 clearInterval(timerInterval);
                 document.getElementById('timer-bar').style.width = '0%';
-                document.getElementById('timer-text').textContent = '時間切れです！必ずどちらかを選択して決定を押してください。';
+                document.getElementById('timer-text').innerHTML = '時間切れです！<br>必ずどれかを選択して決定を押してください。';
             }
         }, 1000);
     }
