@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>実験のご案内</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background-color: #f5f6fa; margin-top: 50px; }
+        .container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .screen { display: none; }
+        .active { display: block; }
+        .btn { padding: 15px 50px; font-size: 1.1em; cursor: pointer; background-color: #2ecc71; color: white; border: none; border-radius: 5px; }
+        .warning { color: #c0392b; font-weight: bold; }
+        #timer-bar { height: 20px; background-color: #e74c3c; width: 100%; transition: width 1s linear; }
+        .correct-highlight {
+        color: #27ae60; /* 見やすく鮮やかな緑色 */
+        font-weight: bold; /* 目立たせるために太字に */
+        font-size: 1.3em; /* ★文字の大きさを1.5倍にでかくする */
+    }
+/* 選択肢を綺麗に並べるための共通ルール */
+.radio-group {
+    display: grid;
+    gap: 10px; /* ボタン同士の隙間 */
+    margin: 0 auto 30px auto;
+}
+
+/* 8択用：4列 × 2段 にする設定 */
+.grid-8 {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 600px;
+}
+
+/* 2択用：2列 × 1段 にする設定 */
+.grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 400px;
+}
+
+/* 押しやすい枠付きボタンのデザイン */
+.option-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 10px;
+    background-color: #f8f9fa; /* 薄いグレーの背景 */
+    border: 2px solid #dee2e6; /* 枠線 */
+    border-radius: 8px; /* 角を少し丸くする */
+    cursor: pointer;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+/* マウスが乗った時に少し色を濃くして押せることをアピール */
+.option-btn:hover {
+    background-color: #e2e6ea;
+}
+
+/* ラジオボタンの丸い部分を少し大きくする */
+.option-btn input[type="radio"] {
+    transform: scale(1.5);
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <div id="screen0" class="screen active">
+        <h2>本実験に関するご案内</h2>
+        <p style="text-align: center; line-height: 2.2; margin: 30px auto; font-size: 0.95em;">
+    これから、画面に表示される図形の並びを見て、<br>
+    複数の選択肢の中から最も適切だと思うものを選ぶ課題に取り組んでいただきます。<br>
+    問題の図形には一定の法則が存在しています。<span style="text-decoration: underline; text-decoration-color: red; text-decoration-thickness: 2px;">直感だけで判断するのではなく、<br>
+    「なぜその図形が当てはまるのか」という理由を慎重に考えたうえで、</span><br>
+    いずれか1つの選択肢をご決定ください。<br>
+    なお、本課題は就職活動の適性検査に近い形式となっておりますので、<br>
+    ぜひ、実際の採用試験に臨むような気持ちで回答してみてください。
+</p>
+
+<p style="font-size: 0.9em; color: #4a5568; margin-bottom: 15px;">以上の内容をご一読いただき、ご了承いただけましたら <br>下記のボタンより操作練習へお進みください。</p>  
+        
+       <button class="btn" onclick="startPractice()">操作練習へ進む</button>
+    </div>
+    
+<div id="screen-practice" class="screen">
+    <div style="background-color: #eee; width: 100%; margin-bottom: 10px;">
+    </div>
+
+    <h2 style="margin-bottom: 20px;">操作の練習</h2>
+    
+    <p style="text-align: center; line-height: 1.8; font-size: 1.0em; margin-bottom: 40px;">
+        本番の課題に入る前に、まずは回答操作の練習を行います。<br>
+        お手元のマウスを動かして下の選択肢の中から1つ選び、<br>
+        一番下にある「練習を完了する」ボタンを押してください。
+    </p>
+
+    <div style="text-align: center;">
+        <p style="color: #e74c3c; font-size: 0.95em; margin-bottom: 10px;">
+            ※これは練習ですので、どの選択肢を選んでも結果には影響しません。
+        </p>
+        <div class="radio-group grid-2" style="margin-bottom: 15px;">
+            <label class="option-btn"><input type="radio" name="practice-choice" value="練習A"> 練習A</label>
+            <label class="option-btn"><input type="radio" name="practice-choice" value="練習B"> 練習B</label>
+        </div>
+        <button class="btn" style="background-color: #3498db; margin-top: 0;" onclick="submitPractice()">練習を完了する</button>
+    </div>
+</div>
+
+    <div id="screen1" class="screen">
+        <strong>次から、本番の課題に取り組んでいただきます。</strong>
+        <br>制限時間等はございませんので、<br>ご自身のペースでよく考えてからご回答ください。
+       </p>
+       <p style="line-height: 2.0; margin-bottom: 30px; font-size: 1.0em;">
+        準備ができましたら、下の「開始」ボタンを押してください。
+    </p>
+        <button class="btn" onclick="startTask()">開始</button>
+    </div>
+
+    <div id="screen2" class="screen">
+       
+        <img src="cab_question_1.png" alt="問題画像" style="max-width: 80%; margin-bottom: 20px;">
+        
+        <div class="radio-group grid-2">
+    <label class="option-btn"><input type="radio" name="choice" value="①">①</label>
+    <label class="option-btn"><input type="radio" name="choice" value="②">②</label>
+</div>
+        <button class="btn" style="background-color: #3498db;" onclick="submitAnswer()">決定</button>
+    </div>
+
+    <div id="screen3" class="screen">
+        <h2>回答を受け付けました</h2>
+        <p>そのままお待ちください。</p>
+    </div>
+
+    <div id="screen4" class="screen">
+        <h2>結果</h2>
+        <div style="padding: 20px; background-color: #fce4e4; border: 2px solid #e74c3c; margin-bottom: 20px;">
+            <p>あなたが選んだ選択肢 <strong id="result-choice" style="font-size: 1.2em;"></strong> は不正解でした。</p>
+            <p style="font-weight: bold; color: #e74c3c; margin-top: 15px;">
+    <p class="result-text correct-highlight">正解は <span id="correct-answer"></span> です。</p>
+        </div>
+        <p>結果を確認したら、次へ進んでください。</p>
+        <button class="btn" style="background-color: #3498db;" onclick="changeScreen('screen4', 'screen5')">次へ</button>
+    </div>
+
+    <div id="screen5" class="screen">
+        <h2>お疲れさまでした。</h2>
+        <p style="text-align: center; line-height: 2.2; margin: 30px auto; font-size: 1.1em;">
+            以上で課題は終了となります。ご協力ありがとうございました。<br><br>
+            画面はこのままの状態で閉じずに、<br>
+            <span style="font-weight: bold; color: #3498db;">実験実施者に「終わりました」とお声がけください。</span><br>
+            続けてご回答いただく質問紙をお渡しいたします。
+        </p>
+    </div>
+
+</div>
+
+<script>
+    var startTime;
+    var reactionTime = 0;
+    var selectedValue = "";
+
+    // 画面を切り替える基本の仕組み
+    function changeScreen(hideId, showId) {
+        document.getElementById(hideId).classList.remove('active');
+        document.getElementById(showId).classList.add('active');
+    }
+
+    // 最初の画面から練習画面へ進む仕組み
+    function startPractice() {
+        changeScreen('screen0', 'screen-practice');
+    }
+
+    // 練習を完了して、本番前の待機画面へ進む仕組み
+    function submitPractice() {
+        var practiceRadios = document.getElementsByName('practice-choice');
+        var isChecked = false;
+        
+        for (var i = 0; i < practiceRadios.length; i++) {
+            if (practiceRadios[i].checked) {
+                isChecked = true;
+                break;
+            }
+        }
+
+        // 選択されていない場合は警告を出してストップ
+        if (!isChecked) {
+            alert("必ずどちらかの選択肢を選んでください。");
+            return;
+        }
+
+        // 選択されていたら次へ進む
+        changeScreen('screen-practice', 'screen1');
+    }
+
+    // 本番を開始する仕組み（時間を測り始める）
+    function startTask() {
+        changeScreen('screen1', 'screen2');
+        startTime = Date.now();
+    }
+
+    // 本番の回答を決定したときの仕組み
+    function submitAnswer() {
+        var radios = document.getElementsByName('choice');
+        var otherChoices = []; // 選ばれなかった選択肢をいれる空の箱
+
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                selectedValue = radios[i].value;
+            }
+        }
+
+        // 選択されていない場合は警告を出してストップ
+        if (selectedValue === "") {
+            alert("選択肢を選んでください。");
+            return;
+        }
+
+        // 参加者が選んだもの「以外」の選択肢を箱に入れる
+        for (var i = 0; i < radios.length; i++) {
+            if (radios[i].value !== selectedValue) {
+                otherChoices.push(radios[i].value);
+            }
+        }
+
+        // 正解を決定する
+        var randomIndex = Math.floor(Math.random() * otherChoices.length);
+        var correctAnswer = otherChoices[randomIndex];
+
+        // かかった時間（反応時間）を計算する
+        var endTime = Date.now();
+        reactionTime = (endTime - startTime) / 1000;
+
+        // 「お待ちください」の画面へ進む
+        changeScreen('screen2', 'screen3');
+
+        // 3秒後に結果画面へ進む
+        setTimeout(function() {
+            document.getElementById('result-choice').textContent = selectedValue;
+            document.getElementById('correct-answer').textContent = correctAnswer;
+            
+            changeScreen('screen3', 'screen4');
+        }, 3000);
+    }
+</script>
+
+</body>
+</html>
